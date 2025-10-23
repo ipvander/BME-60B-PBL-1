@@ -51,7 +51,7 @@ cardValues(cardValues > 10) = 10;
 end
 
 
-function [playerHands, CardIndex] = dealInitialHands(numPlayers, deckCards, deckSuits, cardValues);
+function [playerHands, CardIndex] = dealInitialHands(numPlayers, deckCards, deckSuits, cardValues)
 % Deals two cards to each player (including dealer)
 % Player 1 is the dealer, the rest are human players
 
@@ -70,4 +70,5 @@ function [playerHands, CardIndex] = dealInitialHands(numPlayers, deckCards, deck
         CardIndex = CardIndex + 2;
     end
 end
+
 
