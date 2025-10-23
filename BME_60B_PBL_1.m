@@ -2,6 +2,8 @@
 % 10/21/25
 % This script creates a blackjack game
 
+clear all; close all; clc
+
 % Create card names for dialogue
 cardNames = ["Ace", "2", "3", "4", "5", "6", "7", "8", "9", "10",...
     "Jack", "Queen", "King"];
@@ -68,3 +70,4 @@ function [playerHands, CardIndex] = dealInitialHands(numPlayers, deckCards, deck
         CardIndex = CardIndex + 2;
     end
 end
+
