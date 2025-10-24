@@ -65,6 +65,7 @@ fprintf("Dealer's total: %d\n", dealerTotal);
 % Dealer hits until total >= 17
 while dealerTotal < 17
     fprintf("Dealer hits.\n");
+    pause(1.5);
     playerHands{1}.cards(end+1) = deckCards(cardIndex);
     playerHands{1}.suits(end+1) = deckSuits(cardIndex);
     playerHands{1}.values(end+1) = cardValues(cardIndex);
@@ -77,28 +78,29 @@ end
 
 if dealerTotal > 21
     fprintf("Dealer busts!\n");
+    pause(1.5);
 end
 
 % Determine results
 fprintf("\n--- Results ---\n");
 for p = 2:numPlayers
     playerTotal = adjustForAces(playerHands{p}.values);
-    fprintf("\nPlayer %d total: %d\n", p, playerTotal);
+    fprintf("\nPlayer %d total: %d\n", p-1, playerTotal);
     fprintf("Dealer total: %d\n", dealerTotal);
-
+    pause(1.5);
     if playerTotal > 21
-        fprintf("Player %d busts! Dealer wins.\n", p);
+        fprintf("Player %d busts! Dealer wins.\n", p-1);
     elseif dealerTotal > 21
-        fprintf("Dealer busts! Player %d wins!\n", p);
+        fprintf("Dealer busts! Player %d wins!\n", p-1);
     elseif playerTotal > dealerTotal
-        fprintf("Player %d wins!\n", p);
+        fprintf("Player %d wins!\n", p-1);
     elseif playerTotal < dealerTotal
-        fprintf("Dealer wins against Player %d.\n", p);
+        fprintf("Dealer wins against Player %d.\n", p-1);
     else
-        fprintf("Push! Player %d ties with the Dealer.\n", p);
+        fprintf("Push! Player %d ties with the Dealer.\n", p-1);
     end
 end
-
+pause(1.5);
 fprintf("\nGame over!\n");
 
 
@@ -201,6 +203,7 @@ function [playerHands, cardIndex] = playHand(playerHands, p, deckCards,deckSuits
 
                     if total > 21
                         fprintf("Bust! Total = %d\n", total); % Busts then total score
+                        pause(1.5);
                         break;
                      end
                 case 2
@@ -214,4 +217,3 @@ function [playerHands, cardIndex] = playHand(playerHands, p, deckCards,deckSuits
     % Save updated hand
     playerHands{p} = hand;
 end
-
