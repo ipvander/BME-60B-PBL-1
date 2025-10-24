@@ -8,13 +8,24 @@ cardNames = ["Ace", "2", "3", "4", "5", "6", "7", "8", "9", "10",...
 
 % Create the deck of cards
 [deckCards, deckSuits, cardValues] = createDeck();
-
+%%
+clear all; clc;
 % Ask how many are playing
-numPlayers = input("Enter number of players (including dealer): ");
-while numPlayers < 2
-    numPlayers = input("Must be at least 2 players: ");
-end
+numPlayers = menu('Select number of players: ', 'One', 'Two', 'Three', 'Four');
 
+switch (numPlayers)
+    case 1
+      fprintf('You selected One player \n');
+    case 2
+      fprintf('You selected Two players');
+    case 3
+      fprintf('You selected Three players');
+    case 4
+       fprintf('You selected Four players')
+    otherwise
+      disp('Error D:');
+end
+%%
 % Create player and dealer hands
 [playerHands, cardIndex] = dealInitialHands(numPlayers, deckCards, deckSuits, cardValues);
 
@@ -118,41 +129,34 @@ function [playerHands, cardIndex] = playHand(playerHands, p, deckCards,deckSuits
 
     while total < 21
         fprintf("Current hand total: %d\n", total);
+        %While loop for hitting or staying
+        menu('Hit or stay?', 'Hit', 'Stay');
+            switch (numPlayers)
+                case 1
+                    fprintf('You Hit \n');
+                    % Deal and add card to player's hand
+                    hand.cards(end+1) = deckCards(cardIndex); 
+                    hand.suits(end+1) = deckCards(cardIndex);
+                    hand.values(end+1) = deckCards(cardIndex);
 
-        % validation loop to make sure only hit or stay chosen
-        validInput = false;
-        while ~validInput
-            choice = input("Hit or stay? (h/s): ", 's');
-            choice = lower(choice);
+                    cardIndex = cardIndex + 1;
 
-            if choice == 'h' || choice == 's'
-                validInput = true;
-            else
-                fprintf("Invalid input. Please enter 'h' or 's'.\n");
+                    % Show only card name and suit
+                    fprintf("You drew: %s of %s\n", cardNames(hand.cards(end)), hand.suits(end));
+
+                    % Recalculate total using Ace logic
+                    total = adjustForAces(hand.values);
+
+                    if total > 21
+                        fprintf("Bust! Total = %d\n", total); % Busts then total score
+                        break;
+                     end
+                case 2
+                    fprintf('You Stayed \n');
+                    break;
+                otherwise
+                    disp('Error D:');
             end
-        end
-
-        if choice == 'h'
-            % Deal and add card to player's hand
-            hand.cards(end+1) = deckCards(cardIndex); 
-            hand.suits(end+1) = deckCards(cardIndex);
-            hand.values(end+1) = deckCards(cardIndex);
-
-            cardIndex = cardIndex + 1;
-
-            % Show only card name and suit
-            fprintf("You drew: %s of %s\n", cardNames(hand.cards(end)), hand.suits(end));
-
-            % Recalculate total using Ace logic
-            total = adjustForAces(hand.values);
-
-            if total > 21
-                fprintf("Bust! Total = %d\n", total); % Busts then total score
-                break;
-            end
-        else
-            break;  % If player stays, ends function
-        end
     end
 
     % Save updated hand
