@@ -1,16 +1,16 @@
 % Ian Van Der Linde, Ryan Shabbak, Trevor Holmgren
 % 10/21/25
 % This script creates a blackjack game
-clear all; close all; clc;
+clear; close all; clc;
 % Create card names for dialogue
 cardNames = ["Ace", "2", "3", "4", "5", "6", "7", "8", "9", "10",...
     "Jack", "Queen", "King"];
 
 % Create the deck of cards
 [deckCards, deckSuits] = createDeck();
-% Ask how many are playing
-numPlayers = 1 + menu('Select number of players: ', 'One', 'Two', 'Three', 'Four');
 
+% Menu asks how many are playing
+numPlayers = 1 + menu('Select number of players: ', 'One', 'Two', 'Three', 'Four'); %Max four excluding dealer
 switch (numPlayers - 1)
     case 1
       fprintf('You selected One player \n');
@@ -126,6 +126,7 @@ for p = 2:numPlayers
     else
         fprintf("Push! Player %d ties with the Dealer.\n", p-1);
     end
+    pause(1.5);
 end
 pause(1.5);
 fprintf("\nGame over!\n");
@@ -191,15 +192,15 @@ function [playerHands, cardIndex] = playHand(playerHands, p, deckCards,deckSuits
 hand = playerHands{p};
 total = adjustForAcesFaces(hand.cards);
 
-fprintf("\nPlayer %d's turn:\n", p - 1);
+fprintf('\nPlayer %d''s turn:\n', p - 1);
 
 while total < 21
-    fprintf("Current hand total: %d\n", total);
-    %While loop for hitting or staying
+    fprintf('Current hand total: %d\n', total);
+    %Menu popup for hitting or staying
     playerHit = menu('Hit or stay?', 'Hit', 'Stay');
         switch (playerHit)
             case 1
-                fprintf('You Hit \n');
+                fprintf('\nYou Hit\n');
                 % Deal and add card to player's hand
                 hand.cards(end+1) = deckCards(cardIndex); 
                 hand.suits(end+1) = deckSuits(cardIndex);
@@ -207,18 +208,18 @@ while total < 21
                 cardIndex = cardIndex + 1;
 
                 % Show only card name and suit
-                fprintf("You drew: %s of %s\n", cardNames(hand.cards(end)), hand.suits(end));
+                fprintf('You drew: %s of %s\n', cardNames(hand.cards(end)), hand.suits(end));
 
                 % Recalculate total using Ace logic
                 total = adjustForAcesFaces(hand.cards);
 
                 if total > 21
-                    fprintf("Bust! Total = %d\n", total); % Busts then total score
+                    fprintf('\nBust! Total = %d\n', total); % Busts then total score
                     pause(1.5);
                     break;
                 end
             case 2
-                fprintf('You Stayed \n');
+                fprintf('\nYou Stayed\n');
                 break;
             otherwise
                 disp('Error D:');
