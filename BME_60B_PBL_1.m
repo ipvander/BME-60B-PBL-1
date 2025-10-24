@@ -28,7 +28,7 @@ end
 pause(1.5); % small pause so messages are readable
 
 % Create player and dealer hands
-[playerHands, cardIndex] = dealInitialHands(numPlayers, deckCards, deckSuits); % deal 2 to each seat, return next deck index
+[playerHands, cardIndex] = dealInitialHands(numPlayers, deckCards, deckSuits); % deal 2 cards to each seat, return next deck index
 
 % Show initial hands make sure to hide dealers first card
 for p = numPlayers:-1:1 % print from last seat to dealer so dealer shows last
@@ -127,7 +127,7 @@ for p = 2:numPlayers
     elseif playerTotal < dealerTotal
         fprintf("Dealer wins against Player %d.\n", p-1); % lower non-bust total loses
     else
-        fprintf("Push! Player %d ties with the Dealer.\n", p-1); % equal totals -> tie
+        fprintf("Push! Player %d ties with the Dealer.\n", p-1); % equal totals -> push
     end
     pause(1.5); % pacing
 end
@@ -179,7 +179,7 @@ function total = adjustForAcesFaces(values)
     total = sum(values); % initial sum
 
     % Downgrade Aces to 1 if bust
-    numAces = sum(values == 11); % how many Aces are currently high
+    numAces = sum(values == 11); % how many Aces are currently high (worth 11)
     while total > 21 && numAces > 0
         total = total - 10; % convert one Ace from 11 to 1
         numAces = numAces - 1; % one fewer high Ace remaining
@@ -232,4 +232,5 @@ end
 % Save updated hand
 playerHands{p} = hand; % write the modified hand back to the main list
 end
+
 
