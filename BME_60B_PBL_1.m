@@ -30,14 +30,50 @@ for p = numPlayers:-1:1
             playerHands{p}.suits(c));
         end
     else
-        fprintf("\nPlayer %d's Hand:\n", p);
+        fprintf("\nPlayer %d's Hand:\n", p-1);
         for c = 1:2
         fprintf("%d. %s of %s \n", c, cardNames(playerHands{p}.cards(c)), ...
             playerHands{p}.suits(c));
         end
     end
 end
+% Going through every players' turns except dealer
+for p = numPlayers(end):-1:2
+    [playerHands, cardIndex] = playHand(playerHands, p, deckCards,deckSuits,...
+                                        cardValues, cardIndex, cardNames);
+end
 
+% Dealer plays last
+fprintf("\n--- Dealer's Turn ---\n");
+dealerTotal = adjustForAces(playerHands{1}.values);
+fprintf("Dealer's hand:\n");
+for c = 1:length(playerHands{1}.cards)
+    fprintf("  %s of %s\n", cardNames(playerHands{1}.cards(c)), playerHands{1}.suits(c));
+end
+fprintf("Dealer's total: %d\n", dealerTotal);
+
+% Going through every players' turns except dealer
+for p = numPlayers(end):-1:2
+    [playerHands, cardIndex] = playHand(playerHands, p, deckCards,deckSuits,...
+                                        cardValues, cardIndex, cardNames);
+end
+
+% Dealer hits until total >= 17
+while dealerTotal < 17
+    fprintf("Dealer hits.\n");
+    playerHands{1}.cards(end+1) = deckCards(nextCardIndex);
+    playerHands{1}.suits(end+1) = deckSuits(nextCardIndex);
+    playerHands{1}.values(end+1) = cardValues(nextCardIndex);
+    nextCardIndex = nextCardIndex + 1;
+    
+    dealerTotal = adjustForAces(playerHands{1}.values);
+    fprintf("Dealer drew %s of %s (total = %d)\n", ...
+        cardNames(playerHands{1}.cards(end)), playerHands{1}.suits(end), dealerTotal);
+end
+
+if dealerTotal > 21
+    fprintf("Dealer busts!\n");
+end
 
 
 
@@ -158,3 +194,4 @@ function [playerHands, cardIndex] = playHand(playerHands, p, deckCards,deckSuits
     % Save updated hand
     playerHands{p} = hand;
 end
+
