@@ -1,5 +1,5 @@
 % Ian Van Der Linde, Ryan Shabbak, Trevor Holmgren 
-% 10/21/25
+% 10/24/25
 % This script creates a blackjack game
 
 clear; close all; clc; % start cleared
@@ -232,3 +232,4 @@ end
 % Save updated hand
 playerHands{p} = hand; % write the modified hand back to the main list
 end
+
