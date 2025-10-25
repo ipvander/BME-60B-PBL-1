@@ -49,7 +49,7 @@ for p = numPlayers:-1:1 % print from last seat to dealer so dealer shows last
         end
         playerTotal = adjustForAcesFaces(playerHands{p}.cards); % compute total using Ace's rules and face=10
         if playerTotal == 21
-            fprintf ("\nBlackJack!\n"); % announce blackjack
+            fprintf ("\nBlackJack!\n"); % announce blackjack if 21 from first 2 cards
         end
     end
 end
@@ -61,7 +61,7 @@ for p = 2:numPlayers % players act before the dealer
                                         cardIndex, cardNames); % returns updated hand and next deck index
     playerTotal = adjustForAcesFaces(playerHands{p}.cards); % recompute total after the turn
     if playerTotal == 21
-        fprintf("Current hand total: %d\n", playerTotal); % when a player ends on 21
+        fprintf("Current hand total: %d\n", playerTotal); % States when a player ends on 21 to avoid no statement
     end
     pause(1.5); % pacing between turns
 end
@@ -99,7 +99,7 @@ else
         playerHands{1}.suits(end+1) = deckSuits(cardIndex); % draw matching suit
         cardIndex = cardIndex + 1; % advance deck pointer
     
-        dealerTotal = adjustForAcesFaces(playerHands{1}.cards); % recompute with Ace softening
+        dealerTotal = adjustForAcesFaces(playerHands{1}.cards); % recompute with Ace adjustments if necessary
         fprintf("Dealer drew %s of %s (total = %d)\n", ... % announce draw and updated total
             cardNames(playerHands{1}.cards(end)), playerHands{1}.suits(end), dealerTotal);
     end
@@ -113,7 +113,7 @@ pause(2); % settle before final results
 
 % Determine results
 fprintf("\n--- Results ---\n"); % results header
-for p = 2:numPlayers
+for p = 2:numPlayers % Loop compares each player to dealer
     playerTotal = adjustForAcesFaces(playerHands{p}.cards); % final total for player
     fprintf("\nPlayer %d total: %d\n", p-1, playerTotal); % show player total
     fprintf("Dealer total: %d\n", dealerTotal); % show dealer total
@@ -172,7 +172,7 @@ function [playerHands, cardIndex] = dealInitialHands(numPlayers, deckCards, deck
 end
 
 function total = adjustForAcesFaces(values)
-% Calculates total of hand treating Aces as 11 unless busting
+% Calculates total of hand treating Aces as 11 unless busting, and faces as 10
 
     values(values > 10) = 10; % J/Q/K count as 10
     values(values == 1) = 11; % treat Ace as 11 first
@@ -193,7 +193,7 @@ function [playerHands, cardIndex] = playHand(playerHands, p, deckCards,deckSuits
 % Output: updated playerHands and CardIndex
 
 hand = playerHands{p}; % local working copy of this player's hand
-total = adjustForAcesFaces(hand.cards); % start total with Ace softening
+total = adjustForAcesFaces(hand.cards); % start total with Ace and face adjustment
 
 fprintf('\nPlayer %d''s turn:\n', p - 1); % announce which player is acting
 
@@ -213,17 +213,17 @@ while total < 21 % continue until player stands or busts
                 % Show only card name and suit
                 fprintf('You drew: %s of %s\n', cardNames(hand.cards(end)), hand.suits(end)); % reveal the draw
 
-                % Recalculate total using Ace logic
+                % Recalculate total using Ace and face logic
                 total = adjustForAcesFaces(hand.cards); % update total after drawing
 
                 if total > 21
                     fprintf('\nBust! Total = %d\n', total); % report bust
                     pause(1.5); % short pause before exiting
-                    break; % end player turn on bust
+                    break; % ends player turn on bust
                 end
             case 2
                 fprintf('\nYou Stayed\n'); % player stands on current total
-                break;
+                break; % ends turn
             otherwise
                 disp('Error D:'); % defensive fallback
         end
@@ -232,6 +232,7 @@ end
 % Save updated hand
 playerHands{p} = hand; % write the modified hand back to the main list
 end
+
 
 
 
