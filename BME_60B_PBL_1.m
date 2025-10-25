@@ -30,7 +30,7 @@ pause(1.5); % small pause so messages are readable
 % Create player and dealer hands
 [playerHands, cardIndex] = dealInitialHands(numPlayers, deckCards, deckSuits); % deal 2 cards to each seat, return next deck index
 
-% Show initial hands make sure to hide dealers first card
+% Show initial hands making sure to hide dealers first card
 for p = numPlayers:-1:1 % print from last seat to dealer so dealer shows last
     if p == 1 % dealer is seat 1 in this convention
         fprintf("\nDealer's Hand:\n"); % dealer header
@@ -232,6 +232,7 @@ end
 % Save updated hand
 playerHands{p} = hand; % write the modified hand back to the main list
 end
+
 
 
 
