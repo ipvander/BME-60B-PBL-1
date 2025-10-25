@@ -2,7 +2,7 @@
 % 10/24/25
 % This script creates a blackjack game
 
-clear; close all; clc; % start cleared
+clear all; close all; clc; % start cleared
 
 % Create card names for dialogue
 cardNames = ["Ace", "2", "3", "4", "5", "6", "7", "8", "9", "10",... % labels used when printing card ranks
@@ -232,5 +232,6 @@ end
 % Save updated hand
 playerHands{p} = hand; % write the modified hand back to the main list
 end
+
 
 
